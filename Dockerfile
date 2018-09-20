@@ -46,7 +46,7 @@ WORKDIR ${WORK_DIR}
 RUN mkdir ${WORKDIR}/.buildozer && wget https://www.crystax.net/download/crystax-ndk-10.3.1-linux-x86_64.tar.xz?interactive=true -O ${WORKDIR}/.buildozer/crystax.tar.xz \
   && cd ${WORKDIR}/.buildozer/ \
   && time tar -xf crystax.tar.xz && rm ${WORKDIR}/.buildozer/crystax.tar.xz \
-  && time chown user ${WORKDIR} -R && chown -R user ${WORKDIR}/user/hostcwd
+  && time chown user:user ${WORKDIR}/.buildozer -R && chown -R user:user ${WORKDIR}/user/hostcwd
 
 USER ${USER}
 #WORKDIR ${WORK_DIR}
