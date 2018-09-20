@@ -41,14 +41,15 @@ RUN useradd --create-home --shell /bin/bash ${USER}
 RUN usermod -append --groups sudo ${USER}
 RUN echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-RUN wget https://www.crystax.net/download/crystax-ndk-10.3.1-linux-x86_64.tar.xz?interactive=true -O ~/.buildozer/crystax.tar.xz \
-  && cd ~/.buildozer/ \
-  && tar -xvf crystax.tar.xz && rm ~/.buildozer/crystax.tar.xz \
-  && time chown user /home/user/ -R && chown -R user /home/user/hostcwd
+WORKDIR ${WORK_DIR}
 
+RUN mkdir ${WORKDIR}/.buildozer && wget https://www.crystax.net/download/crystax-ndk-10.3.1-linux-x86_64.tar.xz?interactive=true -O ${WORKDIR}/.buildozer/crystax.tar.xz \
+  && cd ${WORKDIR}/.buildozer/ \
+  && time tar -xf crystax.tar.xz && rm ${WORKDIR}/.buildozer/crystax.tar.xz \
+  && time chown user ${WORKDIR} -R && chown -R user ${WORKDIR}/user/hostcwd
 
 USER ${USER}
-WORKDIR ${WORK_DIR}
+#WORKDIR ${WORK_DIR}
 
 # installs buildozer and dependencies
 RUN pip install --user Cython==0.25.2 buildozer
