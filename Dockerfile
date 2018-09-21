@@ -43,11 +43,6 @@ RUN echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 WORKDIR ${WORK_DIR}
 
-RUN mkdir ${WORKDIR}/.buildozer && wget https://www.crystax.net/download/crystax-ndk-10.3.1-linux-x86_64.tar.xz?interactive=true -O ${WORKDIR}/.buildozer/crystax.tar.xz \
-  && cd ${WORKDIR}/.buildozer/ \
-  && time tar -xf crystax.tar.xz && rm crystax.tar.xz \
-  && time chown user:user ${WORKDIR}/.buildozer -R && chown user:user ${WORK_DIR}
-
 USER ${USER}
 #WORKDIR ${WORK_DIR}
 
@@ -61,6 +56,10 @@ RUN cd /tmp/ && buildozer init && buildozer android adb -- version \
 # fixes source and target JDK version, refs https://github.com/kivy/buildozer/issues/625
 RUN sed s/'name="java.source" value="1.5"'/'name="java.source" value="7"'/ -i ${HOME_DIR}/.buildozer/android/platform/android-sdk-20/tools/ant/build.xml
 RUN sed s/'name="java.target" value="1.5"'/'name="java.target" value="7"'/ -i ${HOME_DIR}/.buildozer/android/platform/android-sdk-20/tools/ant/build.xml
+
+RUN mkdir -p ${WORKDIR}/.buildozer && wget https://www.crystax.net/download/crystax-ndk-10.3.1-linux-x86_64.tar.xz?interactive=true -O ${WORKDIR}/.buildozer/crystax.tar.xz \
+  && cd ${WORKDIR}/.buildozer/ \
+  && time tar -xf crystax.tar.xz && rm crystax.tar.xz
 
 #RUN wget https://www.crystax.net/download/crystax-ndk-10.3.1-linux-x86_64.tar.xz?interactive=true -O ~/.buildozer/crystax.tar.xz \
 #  && cd ~/.buildozer/ \
